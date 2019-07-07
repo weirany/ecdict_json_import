@@ -4,10 +4,10 @@ import jsonpickle
 
 class Definition:
   def __init__(self, word, translation, bnc, frq):
-    self.word = word
-    self.translation = translation
-    self.bnc = bnc
-    self.frq = frq
+    self.w = word
+    self.t = translation
+    self.b = bnc
+    self.f = frq
 
 input_filename = 'ecdict.csv'
 output_filename = 'words_frq_only.json'
@@ -32,7 +32,7 @@ with open(input_filename) as csvfile:
         definition = Definition(row[0], row[3], int(row[8]), int(row[9]))
         defs.append(definition)
     print('end loop')
-    sorted_defs = sorted(defs, key=lambda x: x.frq)
+    sorted_defs = sorted(defs, key=lambda x: x.f)
     print('end sorting')
     jsonpickle.set_encoder_options('json', ensure_ascii=False)
     json_words = jsonpickle.encode(sorted_defs, unpicklable=False)
