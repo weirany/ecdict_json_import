@@ -10,10 +10,11 @@ class Definition:
     self.f = frq
 
 input_filename = 'ecdict.csv'
-output_filename = 'words_frq_only.json'
+output_filename = 'words_frq_only_one_trans.json'
 include_bnc = False
 include_frq = True
 include_all = False
+one_translation_only = True
 
 with open(input_filename) as csvfile:
     defs = []
@@ -24,12 +25,18 @@ with open(input_filename) as csvfile:
       if not skipped_header_row:
         skipped_header_row = True
         continue
+      # only take these fields: 0 - word; 3 - translation; 8 - bnc; 9 - frq
+      word = row[0]
+      translation = row[3]
+      bnc = int(row[8])
+      frq = int(row[9])
       is_skip = True
-      if include_all or (include_bnc and row[8] != '0') or (include_frq and row[9] != '0'):
+      if include_all or (include_bnc and bnc != 0) or (include_frq and frq != 0):
         is_skip = False
       if not is_skip:
-        # only take these fields: 0 - word; 3 - definition; 8 - bnc; 9 - frq
-        definition = Definition(row[0], row[3], int(row[8]), int(row[9]))
+        if one_translation_only:
+          translation = translation.split('\\n')[0].split('\\r')[0]
+        definition = Definition(word, translation, bnc, frq)
         defs.append(definition)
     print('end loop')
     sorted_defs = sorted(defs, key=lambda x: x.f)
