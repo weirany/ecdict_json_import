@@ -6,11 +6,11 @@ class Definition:
   def __init__(self, word, translation, bnc, frq):
     self.w = word
     self.t = translation
-    self.b = bnc
+    # self.b = bnc
     self.f = frq
 
 input_filename = 'ecdict.csv'
-output_filename = 'words_frq_only_one_trans.json'
+output_filename = 'words_frq_only_one_trans_final.json'
 include_bnc = False
 include_frq = True
 include_all = False
